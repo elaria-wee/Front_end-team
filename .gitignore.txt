@@ -1,0 +1,47 @@
+# Miscellaneous
+*.log
+*.tmp
+*.lock
+*.DS_Store
+.idea/
+.vscode/
+.svn/
+*.swp
+
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub-cache/
+build/
+generated_plugin_registrant.dart
+
+# Android related
+android/.gradle/
+android/local.properties
+android/key.properties
+android/app/release/
+
+# iOS/macOS related
+ios/Flutter/.last_build_id
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+macos/Flutter/Flutter-Debug.xcconfig
+macos/Flutter/Flutter-Release.xcconfig
+macos/Pods/
+macos/.symlinks/
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Windows related
+windows/runner/Debug/
+windows/runner/Release/
+windows/flutter/ephemeral/
+
+# Linux related
+linux/flutter/ephemeral/
+
+# Environment
+.env
