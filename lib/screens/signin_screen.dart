@@ -82,7 +82,11 @@ class _SignInScreenState extends State<SignInScreen>
     }
 
     _showToast("Welcome back! Let's learn with Eli!", success: true);
-    Navigator.pushNamed(context, '/home');
+    Future.delayed(const Duration(milliseconds: 400), () {
+      if (context.mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    });
   }
 
   @override

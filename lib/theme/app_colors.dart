@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 /// Following child-friendly design guidelines with soft, cheerful colors
 class AppColors {
   // Primary Colors
+  static const Color primaryBlue = Color(0xFF4F9DFF);
   static const Color skyBlue = Color(0xFF87CEEB); // Sky Blue
+  static const Color gradientLight = Color(0xFFAEE6FF);
+  static const Color gradientSoft = Color(0xFFE6F0FF);
+  static const Color darkBlue = Color(0xFF1E3A5F);
   static const Color warmOrange = Color(0xFFFFA500); // Warm Orange
   static const Color white = Color(0xFFFFFFFF); // White
 

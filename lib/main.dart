@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/signin_screen.dart';
+import 'screens/signup_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/navepar_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/ai_story_screen.dart';
+import 'pages/weekly_score_page.dart';
 import 'theme/app_colors.dart';
+import 'providers/theme_provider.dart';
+import 'providers/ai_story_provider.dart';
+import 'providers/weekly_score_provider.dart';
 
 void main() {
   runApp(const EliEnglishAdventuresApp());
@@ -11,100 +21,77 @@ void main() {
 class EliEnglishAdventuresApp extends StatelessWidget {
   const EliEnglishAdventuresApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Eli\'s English Adventures',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: AppColors.skyBlue,
-        scaffoldBackgroundColor: AppColors.background,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.skyBlue,
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            elevation: 8,
-            shadowColor: AppColors.shadowMedium,
-          ),
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            elevation: 6,
-            shadowColor: AppColors.shadowLight,
-          ),
+  ThemeData _buildLightTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.skyBlue,
+        brightness: Brightness.light,
+      ),
+      primaryColor: AppColors.skyBlue,
+      scaffoldBackgroundColor: AppColors.background,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 8,
+          shadowColor: AppColors.shadowMedium,
         ),
       ),
-      home: const WelcomeScreen(),
-      routes: {
-        '/signin': (context) => const PlaceholderScreen(title: 'Sign In'),
-        '/signup': (context) => const PlaceholderScreen(title: 'Sign Up'),
-      },
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          elevation: 6,
+          shadowColor: AppColors.shadowLight,
+        ),
+      ),
     );
   }
-}
 
-/// Placeholder screen for Sign In and Sign Up
-class PlaceholderScreen extends StatelessWidget {
-  final String title;
-
-  const PlaceholderScreen({super.key, required this.title});
+  ThemeData _buildDarkTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.skyBlue,
+        brightness: Brightness.dark,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(elevation: 8),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(elevation: 6),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        backgroundColor: AppColors.skyBlue,
-        foregroundColor: AppColors.white,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              title == 'Sign In' ? Icons.login : Icons.person_add,
-              size: 100,
-              color: AppColors.skyBlue,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              '$title Screen',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'This screen will be implemented next!',
-              style: const TextStyle(
-                fontSize: 16,
-                color: AppColors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.warmOrange,
-                foregroundColor: AppColors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
-              ),
-              child: const Text('Go Back'),
-            ),
-          ],
-        ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => AiStoryProvider()),
+        ChangeNotifierProvider(create: (_) => WeeklyScoreProvider()),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, _) {
+          return MaterialApp(
+            title: 'Eli\'s English Adventures',
+            debugShowCheckedModeBanner: false,
+            theme: _buildLightTheme(),
+            darkTheme: _buildDarkTheme(),
+            themeMode: themeProvider.themeMode,
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const WelcomeScreen(),
+              '/signin': (context) => const SignInScreen(),
+              '/signup': (context) => const SignUpScreen(),
+              '/home': (context) => const HomeScreen(),
+              '/navpar': (context) => const NaveParScreen(),
+              '/profile': (context) => const ProfileScreen(),
+              '/ai-story': (context) => const AIStoryScreen(),
+              '/weekly-score': (context) => const WeeklyScorePage(),
+            },
+          );
+        },
       ),
     );
   }

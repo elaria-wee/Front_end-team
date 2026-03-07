@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'signin_screen.dart';
 
@@ -55,6 +56,8 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _childAgeController = TextEditingController();
+  final TextEditingController _parentEmailController = TextEditingController();
 
   bool _isPressing = false;
   late final AnimationController _logoPulseController;
@@ -78,6 +81,8 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _childAgeController.dispose();
+    _parentEmailController.dispose();
     super.dispose();
   }
 
@@ -109,6 +114,11 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
     return digitRegex.hasMatch(password);
   }
 
+  bool _isValidChildAge(String value) {
+    final age = int.tryParse(value.trim());
+    return age != null && age >= 1 && age <= 18;
+  }
+
   void _validateEmailOnFocus() {
     final email = _emailController.text.trim();
     if (email.isNotEmpty && !_isValidEmail(email)) {
@@ -120,9 +130,11 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
+    final childAge = _childAgeController.text.trim();
+    final parentEmail = _parentEmailController.text.trim();
 
-    if (name.isEmpty || email.isEmpty || password.isEmpty) {
-      _showSnack(context, 'Please fill in all fields!');
+    if (name.isEmpty || email.isEmpty || password.isEmpty || childAge.isEmpty) {
+      _showSnack(context, 'Please fill in all required fields!');
       return;
     }
 
@@ -138,6 +150,16 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
 
     if (!_isValidPassword(password)) {
       _showSnack(context, 'Password must be at least 4 characters and include at least 1 digit!');
+      return;
+    }
+
+    if (!_isValidChildAge(childAge)) {
+      _showSnack(context, 'Child Age must be a number between 1 and 18!');
+      return;
+    }
+
+    if (parentEmail.isNotEmpty && !_isValidEmail(parentEmail)) {
+      _showSnack(context, 'Please enter a valid parent email address!');
       return;
     }
 
@@ -264,6 +286,35 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
               hintText: '••••••••',
               icon: Icons.lock,
               obscureText: true,
+              textInputAction: TextInputAction.next,
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          // Child Age Field
+          _LabeledField(
+            label: 'Child Age',
+            child: _IconInput(
+              controller: _childAgeController,
+              hintText: 'e.g. 7',
+              icon: Icons.cake,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.next,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          // Parent Email (Optional) Field
+          _LabeledField(
+            label: 'Parent Email (Optional)',
+            child: _IconInput(
+              controller: _parentEmailController,
+              hintText: 'optional@example.com',
+              icon: Icons.email_outlined,
+              keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.done,
             ),
           ),
@@ -378,6 +429,7 @@ class _IconInput extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final VoidCallback? onTap;
+  final List<TextInputFormatter>? inputFormatters;
 
   const _IconInput({
     required this.controller,
@@ -387,6 +439,7 @@ class _IconInput extends StatelessWidget {
     this.keyboardType,
     this.textInputAction,
     this.onTap,
+    this.inputFormatters,
   });
 
   @override
@@ -401,6 +454,7 @@ class _IconInput extends StatelessWidget {
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       onTap: onTap,
+      inputFormatters: inputFormatters,
       style: GoogleFonts.nunito(fontWeight: FontWeight.w800),
       decoration: InputDecoration(
         hintText: hintText,
