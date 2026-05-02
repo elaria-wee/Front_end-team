@@ -8,6 +8,7 @@ import 'screens/navepar_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/ai_story_screen.dart';
 import 'pages/weekly_score_page.dart';
+import 'screens/reading_screen.dart';
 import 'theme/app_colors.dart';
 import 'providers/theme_provider.dart';
 import 'providers/ai_story_provider.dart';
@@ -89,6 +90,7 @@ class EliEnglishAdventuresApp extends StatelessWidget {
               '/profile': (context) => const ProfileScreen(),
               '/ai-story': (context) => const AIStoryScreen(),
               '/weekly-score': (context) => const WeeklyScorePage(),
+              '/reading': (context) => const ReadingScreen(),
             },
           );
         },
