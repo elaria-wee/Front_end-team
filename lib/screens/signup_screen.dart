@@ -70,9 +70,10 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
       vsync: this,
       duration: const Duration(milliseconds: 1600),
     )..repeat(reverse: true);
-    _logoScale = Tween<double>(begin: 0.98, end: 1.02)
-        .chain(CurveTween(curve: Curves.easeInOut))
-        .animate(_logoPulseController);
+    _logoScale = Tween<double>(
+      begin: 0.98,
+      end: 1.02,
+    ).chain(CurveTween(curve: Curves.easeInOut)).animate(_logoPulseController);
   }
 
   @override
@@ -87,10 +88,17 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
   }
 
   // Shows a SnackBar with color according to success or error
-  void _showSnack(BuildContext context, String message, {bool success = false}) {
+  void _showSnack(
+    BuildContext context,
+    String message, {
+    bool success = false,
+  }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: GoogleFonts.nunito(fontWeight: FontWeight.w800)),
+        content: Text(
+          message,
+          style: GoogleFonts.nunito(fontWeight: FontWeight.w800),
+        ),
         backgroundColor: success ? Colors.green.shade600 : Colors.red.shade600,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -99,7 +107,9 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
   }
 
   bool _isValidEmail(String email) {
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
     return emailRegex.hasMatch(email);
   }
 
@@ -149,7 +159,10 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
     }
 
     if (!_isValidPassword(password)) {
-      _showSnack(context, 'Password must be at least 4 characters and include at least 1 digit!');
+      _showSnack(
+        context,
+        'Password must be at least 4 characters and include at least 1 digit!',
+      );
       return;
     }
 
@@ -336,7 +349,10 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
                 child: ElevatedButton(
                   onPressed: () => _onSubmit(context),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 24,
+                    ),
                     elevation: 8,
                     shadowColor: Colors.black.withOpacity(0.2),
                     backgroundColor: widget.accentColor,
@@ -446,7 +462,9 @@ class _IconInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color border = Theme.of(context).dividerColor;
     final Color primary = Theme.of(context).colorScheme.primary;
-    final Color fill = Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.35);
+    final Color fill = Theme.of(
+      context,
+    ).colorScheme.surfaceContainerHighest.withOpacity(0.35);
 
     return TextField(
       controller: controller,
@@ -461,7 +479,10 @@ class _IconInput extends StatelessWidget {
         prefixIcon: Icon(icon, color: primary),
         filled: true,
         fillColor: fill,
-        contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 18,
+          horizontal: 16,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(24),
           borderSide: BorderSide(color: border, width: 2),
@@ -474,5 +495,3 @@ class _IconInput extends StatelessWidget {
     );
   }
 }
-
-
