@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/level_card.dart';
 import '../widgets/main_layout.dart';
+import '../data/stories_data.dart';
+import '../pages/level_page.dart';
 
 /// Home screen for Eli's English Adventures kids learning app.
 /// Matches React/Next.js design with responsive layout and animations.
@@ -12,8 +14,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late AnimationController _avatarFloatController;
   late AnimationController _waveBounceController;
   late AnimationController _starFloatController;
@@ -96,13 +97,28 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final padding = MediaQuery.paddingOf(context);
+    final size = MediaQuery.of(context).size;
+    final padding = MediaQuery.of(context).padding;
     final isLargeScreen = size.width >= 600;
 
-    final avatarSize = _getResponsiveValue(size, small: 100, medium: 115, large: 130);
-    final titleSize = _getResponsiveValue(size, small: 22, medium: 24, large: 28);
-    final subtitleSize = _getResponsiveValue(size, small: 14, medium: 15, large: 16);
+    final avatarSize = _getResponsiveValue(
+      size,
+      small: 100,
+      medium: 115,
+      large: 130,
+    );
+    final titleSize = _getResponsiveValue(
+      size,
+      small: 22,
+      medium: 24,
+      large: 28,
+    );
+    final subtitleSize = _getResponsiveValue(
+      size,
+      small: 14,
+      medium: 15,
+      large: 16,
+    );
     final horizontalPadding = size.width * 0.06;
 
     return MainLayout(
@@ -110,38 +126,43 @@ class _HomeScreenState extends State<HomeScreen>
       child: Container(
         color: AppColors.background,
         child: Stack(
-        children: [
-          SafeArea(
-            top: false,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(
-                horizontalPadding,
-                12,
-                horizontalPadding,
-                padding.bottom + 80,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildAvatarSection(avatarSize),
-                  const SizedBox(height: 20),
-                  _buildWelcomeText(context, titleSize, subtitleSize),
-                  SizedBox(height: size.height * 0.03),
-                  _buildLevelCards(context, size, isLargeScreen),
-                  SizedBox(height: size.height * 0.025),
-                  _buildFunFactCard(context, size),
-                ],
+          children: [
+            SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(
+                  horizontalPadding,
+                  12,
+                  horizontalPadding,
+                  padding.bottom + 80,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildAvatarSection(avatarSize),
+                    const SizedBox(height: 20),
+                    _buildWelcomeText(context, titleSize, subtitleSize),
+                    SizedBox(height: size.height * 0.03),
+                    _buildLevelCards(context, size, isLargeScreen),
+                    SizedBox(height: size.height * 0.025),
+                    _buildFunFactCard(context, size),
+                  ],
+                ),
               ),
             ),
-          ),
-          _buildBackgroundDecorations(size, padding),
-        ],
+            _buildBackgroundDecorations(size, padding),
+          ],
         ),
       ),
     );
   }
 
-  double _getResponsiveValue(Size size, {required double small, required double medium, required double large}) {
+  double _getResponsiveValue(
+    Size size, {
+    required double small,
+    required double medium,
+    required double large,
+  }) {
     if (size.width >= 900 || size.height >= 700) return large;
     if (size.width >= 400) return medium;
     return small;
@@ -236,10 +257,10 @@ class _HomeScreenState extends State<HomeScreen>
           'Welcome Back, Friend!',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: titleSize,
-                color: AppColors.textPrimary,
-              ),
+            fontWeight: FontWeight.bold,
+            fontSize: titleSize,
+            color: AppColors.textPrimary,
+          ),
         ),
         const SizedBox(height: 8),
         Padding(
@@ -248,21 +269,17 @@ class _HomeScreenState extends State<HomeScreen>
             "Choose your learning level and let's have fun with English!",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: subtitleSize,
-                  color: AppColors.textSecondary,
-                  height: 1.35,
-                ),
+              fontSize: subtitleSize,
+              color: AppColors.textSecondary,
+              height: 1.35,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildLevelCards(
-    BuildContext context,
-    Size size,
-    bool isLargeScreen,
-  ) {
+  Widget _buildLevelCards(BuildContext context, Size size, bool isLargeScreen) {
     final cards = [
       _AnimatedLevelCard(
         animation: _card1Anim,
@@ -273,7 +290,27 @@ class _HomeScreenState extends State<HomeScreen>
           icon: Icons.star_rounded,
           themeColor: _levelBeginnerColor,
           backgroundImagePath: 'assets/level_1_background.png',
-          onTap: () => _onLevelTapped(context, 'A', 'Beginner'),
+          onTap: () {
+            final stories = storiesForLevel(1);
+            if (stories.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('No stories found for Level 1 yet 📚'),
+                  behavior: SnackBarBehavior.floating,
+                  margin: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom + 16,
+                    left: 16,
+                    right: 16,
+                  ),
+                ),
+              );
+              return;
+            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LevelPage()),
+            );
+          },
         ),
       ),
       _AnimatedLevelCard(
@@ -342,7 +379,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.only(
-          bottom: MediaQuery.paddingOf(context).bottom + 16,
+          bottom: MediaQuery.of(context).padding.bottom + 16,
           left: 16,
           right: 16,
         ),
@@ -371,11 +408,11 @@ class _HomeScreenState extends State<HomeScreen>
             child: Text(
               'Fun Fact: Eli loves to read stories before bedtime!',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 14,
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w600,
-                    height: 1.4,
-                  ),
+                fontSize: 14,
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w600,
+                height: 1.4,
+              ),
             ),
           ),
         ],
@@ -429,10 +466,7 @@ class _HomeScreenState extends State<HomeScreen>
 
 /// Wraps a widget with staggered fade-in and upward slide animation.
 class _AnimatedLevelCard extends StatelessWidget {
-  const _AnimatedLevelCard({
-    required this.animation,
-    required this.child,
-  });
+  const _AnimatedLevelCard({required this.animation, required this.child});
 
   final Animation<double> animation;
   final Widget child;

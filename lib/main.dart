@@ -90,7 +90,6 @@ class EliEnglishAdventuresApp extends StatelessWidget {
               '/profile': (context) => const ProfileScreen(),
               '/ai-story': (context) => const AIStoryScreen(),
               '/weekly-score': (context) => const WeeklyScorePage(),
-              '/reading': (context) => const ReadingScreen(),
             },
           );
         },

@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../data/reading_stories.dart';
-import '../models/reading_models.dart';
+import '../data/stories_data.dart';
+import '../models/story_models.dart';
 import '../theme/app_colors.dart';
 
 enum _ReadingPage {
@@ -16,9 +16,13 @@ enum _ReadingPage {
 class ReadingScreen extends StatefulWidget {
   const ReadingScreen({
     super.key,
+    required this.levelId,
+    required this.story,
     this.initialStoryIndex = 0,
   });
 
+  final int levelId;
+  final Story story;
   final int initialStoryIndex;
 
   @override
@@ -47,7 +51,12 @@ class _ReadingScreenState extends State<ReadingScreen>
   @override
   void initState() {
     super.initState();
-    _storyIndex = widget.initialStoryIndex.clamp(0, readingStories.length - 1);
+    final stories = _stories;
+    _storyIndex =
+        widget.initialStoryIndex.clamp(0, math.max(0, stories.length - 1));
+    // If a Story is provided directly, prefer its position.
+    final providedIndex = stories.indexWhere((s) => s.id == widget.story.id);
+    if (providedIndex >= 0) _storyIndex = providedIndex;
 
     _fadeController = AnimationController(
       vsync: this,
@@ -94,13 +103,15 @@ class _ReadingScreenState extends State<ReadingScreen>
     super.dispose();
   }
 
-  ReadingStory get _story => readingStories[_storyIndex];
+  List<Story> get _stories => storiesForLevel(widget.levelId);
+
+  Story get _currentStory => _stories[_storyIndex];
 
   int get _totalStories => 20; // UI requirement (Story X of 20).
 
   bool get _allCorrect =>
-      _story.questions.isNotEmpty &&
-      _correctQuestions.length == _story.questions.length;
+      _currentStory.questions.isNotEmpty &&
+      _correctQuestions.length == _currentStory.questions.length;
 
   void _goToQuestions() {
     setState(() => _page = _ReadingPage.questions);
@@ -127,8 +138,8 @@ class _ReadingScreenState extends State<ReadingScreen>
   }
 
   void _onOptionTap(int questionIndex, int optionIndex) {
-    final q = _story.questions[questionIndex];
-    final isCorrect = optionIndex == q.correctAnswerIndex;
+    final q = _currentStory.questions[questionIndex];
+    final isCorrect = q.options[optionIndex] == q.correctAnswer;
 
     setState(() {
       _selectedOption[questionIndex] = optionIndex;
@@ -149,7 +160,7 @@ class _ReadingScreenState extends State<ReadingScreen>
 
   void _goNextStory() {
     if (!_allCorrect) return;
-    if (_storyIndex >= readingStories.length - 1) {
+    if (_storyIndex >= _stories.length - 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('You finished all stories! 🌟'),
@@ -207,14 +218,14 @@ class _ReadingScreenState extends State<ReadingScreen>
                             switchOutCurve: Curves.easeIn,
                             child: _page == _ReadingPage.story
                                 ? _StoryView(
-                                    key: ValueKey('story-${_story.id}'),
-                                    story: _story,
+                                    key: ValueKey('story-${_currentStory.id}'),
+                                    story: _currentStory,
                                     stickerFloat: _stickerFloat,
                                     onNext: _goToQuestions,
                                   )
                                 : _QuestionsView(
-                                    key: ValueKey('questions-${_story.id}'),
-                                    story: _story,
+                                    key: ValueKey('questions-${_currentStory.id}'),
+                                    story: _currentStory,
                                     selectedOption: _selectedOption,
                                     correctQuestions: _correctQuestions,
                                     showTryAgain: _showTryAgain,
@@ -368,7 +379,7 @@ class _StoryView extends StatelessWidget {
     required this.onNext,
   });
 
-  final ReadingStory story;
+  final Story story;
   final Animation<double> stickerFloat;
   final VoidCallback onNext;
 
@@ -440,7 +451,7 @@ class _StoryView extends StatelessWidget {
                 ),
               );
             },
-            child: _StickerImage(assetPath: story.imageAssetPath),
+            child: _StickerImage(assetPath: story.imagePath),
           ),
         ),
       ],
@@ -461,7 +472,7 @@ class _QuestionsView extends StatelessWidget {
     required this.onNextStory,
   });
 
-  final ReadingStory story;
+  final Story story;
   final Map<int, int?> selectedOption;
   final Set<int> correctQuestions;
   final Map<int, bool> showTryAgain;
@@ -522,7 +533,7 @@ class _QuestionsView extends StatelessWidget {
             }),
             const SizedBox(height: 18),
             _PrimaryButton(
-              label: allCorrect ? 'Next Story' : 'Next Story',
+              label: allCorrect ? 'Next Story' : 'Answer all questions',
               icon: Icons.arrow_forward_rounded,
               onTap: allCorrect ? onNextStory : null,
               big: true,
@@ -545,7 +556,7 @@ class _QuestionCard extends StatelessWidget {
   });
 
   final int index;
-  final ReadingQuestion question;
+  final Question question;
   final int? selected;
   final bool isCorrect;
   final bool showWrong;
@@ -598,7 +609,7 @@ class _QuestionCard extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  question.text,
+                  question.questionText,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontSize: 17,
                         fontWeight: FontWeight.w800,
@@ -618,7 +629,7 @@ class _QuestionCard extends StatelessWidget {
           ...List.generate(question.options.length, (optionIndex) {
             final option = question.options[optionIndex];
             final isSelected = selected == optionIndex;
-            final isOptionCorrect = optionIndex == question.correctAnswerIndex;
+            final isOptionCorrect = option == question.correctAnswer;
 
             Color bg = Colors.white;
             Color border = AppColors.gradientLight.withValues(alpha: 0.55);
