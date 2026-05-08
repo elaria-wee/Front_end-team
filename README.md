@@ -9,6 +9,16 @@ A beautiful Flutter welcome screen for a kids' English learning app featuring:
 - **Font**: Nunito (rounded, playful from Google Fonts)
 - **Style**: Vibrant with soft shadows and subtle bounce animations
 
+##Screenshots
+assets/Welcome.png
+assets/SignUp.png
+assets/SignIn.png
+assets/Home1.png
+assets/Home2.png
+assets/Nav.png
+
+
+
 ## 🧩 Screen Components
 
 - **Background**: Bright jungle classroom theme with gradient
