@@ -61,100 +61,77 @@ class _LevelPageState extends State<LevelPage> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: const Color(0xFFE3F2FD), // baby blue ناعم
       body: SafeArea(
-  child: Column(
-    children: [
-      _TopSection(
-        completed: _completedStories,
-        total: _totalStories,
-        onBack: () {},
-        onOpenReading: () {},
-      ),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(16, 12, 16, padding.bottom + 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _TopSection(
+                completed: _completedStories,
+                total: _totalStories,
+                onBack: () => Navigator.pop(context),
+                onOpenReading: () => _showNavigatingSnack('Beginner'),
+              ),
+              const SizedBox(height: 14),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 1,
+                ),
+                itemCount: _totalStories,
+                itemBuilder: (context, index) {
+                  final storyNumber = index + 1;
+                  final state = _StoryState.from(
+                    storyNumber: storyNumber,
+                    completed: _completedStories,
+                    current: _currentStoryNumber,
+                  );
 
-      const SizedBox(height: 14),
+                  // Define the emoji sources
+                  const List<String> storyEmojis = [
+                    '🐶',
+                    '🐱',
+                    '🐭',
+                    '🐹',
+                    '🦊',
+                    '🐻',
+                  ];
+                  const List<String> genericEmojis = [
+                    '📖',
+                    '📚',
+                    '📝',
+                    '🎒',
+                    '✨',
+                  ];
 
-      Expanded(
-        child: GridView.builder(
-          itemCount: 6,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-          ),
-          itemBuilder: (context, index) {
-            return Container(
-              color: Colors.white,
-              child: Center(child: Text("Story $index")),
-            );
-          },
-        ),
-      ),
-    ],
-  ),
-),
-            // children: [
-            //   _TopSection(
-            //     completed: _completedStories,
-            //     total: _totalStories,
-            //     onBack: () => Navigator.pop(context),
-            //     onOpenReading: () => _showNavigatingSnack('Beginner'),
-            //   ),
-            //   const SizedBox(height: 14),
-            //   GridView.builder(
-            //     shrinkWrap: true,
-            //     physics: const NeverScrollableScrollPhysics(),
-            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //       crossAxisCount: 3,
-            //       crossAxisSpacing: 12,
-            //       mainAxisSpacing: 12,
-            //       childAspectRatio: 1,
-            //     ),
-            //     itemCount: _totalStories,
-            //     itemBuilder: (context, index) {
-            //       final storyNumber = index + 1;
-            //       final state = _StoryState.from(
-            //         storyNumber: storyNumber,
-            //         completed: _completedStories,
-            //         current: _currentStoryNumber,
-            //       );
+                  final emoji = storyNumber <= 6
+                      ? storyEmojis[storyNumber - 1]
+                      : genericEmojis[(storyNumber - 7) %
+                            genericEmojis.length];
 
-            //       // Define the emoji sources
-            //       const List<String> storyEmojis = [
-            //         '🐶',
-            //         '🐱',
-            //         '🐭',
-            //         '🐹',
-            //         '🦊',
-            //         '🐻',
-            //       ];
-            //       const List<String> genericEmojis = [
-            //         '📖',
-            //         '📚',
-            //         '📝',
-            //         '🎒',
-            //         '✨',
-            //       ];
+                  final canTap = storyNumber <= _completedStories;
 
-            //       final emoji = storyNumber <= 6
-            //           ? storyEmojis[storyNumber - 1]
-            //           : genericEmojis[(storyNumber - 7) %
-            //                 genericEmojis.length];
-            //       final canTap = storyNumber <= _completedStories;
-
-            //       return _StoryTile(
-            //         storyNumber: storyNumber,
-            //         emoji: emoji,
-            //         state: state,
-            //         bounce: _bounce,
-            //         onTap: canTap
-            //             ? () => _showNavigatingSnack('Story $storyNumber')
-            //             : null,
-            //       );
-            //     },
-            //   ),
-            //   const SizedBox(height: 14),
-            //   const _FooterCard(
-            //     completed: _completedStories,
-            //     total: _totalStories,
-            //   ),
-            // ],
+                  return _StoryTile(
+                    storyNumber: storyNumber,
+                    emoji: emoji,
+                    state: state,
+                    bounce: _bounce,
+                    onTap: canTap
+                        ? () => _showNavigatingSnack('Story $storyNumber')
+                        : null,
+                  );
+                },
+              ),
+              const SizedBox(height: 14),
+              const _FooterCard(
+                completed: _completedStories,
+                total: _totalStories,
+              ),
+            ],
           ),
         ),
       ),

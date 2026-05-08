@@ -122,13 +122,13 @@ class _LevelCardState extends State<LevelCard>
               borderRadius: BorderRadius.circular(LevelCard.borderRadius),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.12),
+                  color: Colors.black.withValues(alpha: 0.12),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                   spreadRadius: 0,
                 ),
                 BoxShadow(
-                  color: widget.themeColor.withOpacity(0.15),
+                  color: widget.themeColor.withValues(alpha: 0.15),
                   blurRadius: _isHovered ? 16 : 8,
                   offset: Offset(0, _isHovered ? 5 : 3),
                   spreadRadius: 0,
@@ -156,8 +156,8 @@ class _LevelCardState extends State<LevelCard>
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: <Color>[
-                                widget.themeColor.withOpacity(0.4),
-                                widget.themeColor.withOpacity(0.15),
+                                widget.themeColor.withValues(alpha: 0.4),
+                                widget.themeColor.withValues(alpha: 0.15),
                               ],
                             ),
                           ),
@@ -172,8 +172,8 @@ class _LevelCardState extends State<LevelCard>
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: <Color>[
-                            Colors.black.withOpacity(0.15),
-                            Colors.black.withOpacity(0.55),
+                            Colors.black.withValues(alpha: 0.15),
+                            Colors.black.withValues(alpha: 0.55),
                           ],
                         ),
                       ),
@@ -191,7 +191,7 @@ class _LevelCardState extends State<LevelCard>
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: widget.themeColor.withOpacity(0.95),
+                            color: widget.themeColor.withValues(alpha: 0.95),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
@@ -218,7 +218,7 @@ class _LevelCardState extends State<LevelCard>
                             fontSize: titleSize,
                             shadows: <Shadow>[
                               Shadow(
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withValues(alpha: 0.5),
                                 blurRadius: 4,
                                 offset: const Offset(0, 2),
                               ),
@@ -230,12 +230,12 @@ class _LevelCardState extends State<LevelCard>
                           child: Text(
                             widget.description,
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.95),
+                              color: Colors.white.withValues(alpha: 0.95),
                               fontSize: descSize,
                               height: 1.35,
                               shadows: <Shadow>[
                                 Shadow(
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: Colors.black.withValues(alpha: 0.4),
                                   blurRadius: 2,
                                   offset: const Offset(0, 1),
                                 ),

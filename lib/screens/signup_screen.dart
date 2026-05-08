@@ -192,7 +192,7 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 20,
             spreadRadius: 2,
             offset: const Offset(0, 10),
@@ -257,7 +257,7 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
             style: GoogleFonts.nunito(
               fontSize: 16,
               fontWeight: FontWeight.w700,
-              color: primaryText.withOpacity(0.75),
+              color: primaryText.withValues(alpha: 0.75),
             ),
           ),
 
@@ -354,7 +354,7 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
                       horizontal: 24,
                     ),
                     elevation: 8,
-                    shadowColor: Colors.black.withOpacity(0.2),
+                    shadowColor: Colors.black.withValues(alpha: 0.2),
                     backgroundColor: widget.accentColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -384,7 +384,7 @@ class _SignUpFormCardState extends State<_SignUpFormCard>
                 style: GoogleFonts.nunito(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
-                  color: primaryText.withOpacity(0.8),
+                  color: primaryText.withValues(alpha: 0.8),
                 ),
               ),
               TextButton(
@@ -464,7 +464,7 @@ class _IconInput extends StatelessWidget {
     final Color primary = Theme.of(context).colorScheme.primary;
     final Color fill = Theme.of(
       context,
-    ).colorScheme.surfaceContainerHighest.withOpacity(0.35);
+    ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.35);
 
     return TextField(
       controller: controller,

@@ -204,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.skyBlue.withOpacity(0.25),
+        color: AppColors.skyBlue.withValues(alpha: 0.25),
         boxShadow: [
           BoxShadow(
             color: AppColors.shadowLight,
@@ -213,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             offset: const Offset(0, 4),
           ),
           BoxShadow(
-            color: AppColors.skyBlue.withOpacity(0.15),
+            color: AppColors.skyBlue.withValues(alpha: 0.15),
             blurRadius: 20,
             spreadRadius: -4,
             offset: const Offset(0, 2),
@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.skyBlue.withOpacity(0.3),
+        color: AppColors.skyBlue.withValues(alpha: 0.3),
       ),
       child: Center(
         child: Text('🐘', style: TextStyle(fontSize: size * 0.5)),
@@ -393,10 +393,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: _funFactAccentColor.withOpacity(0.15),
+        color: _funFactAccentColor.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: _funFactAccentColor.withOpacity(0.3),
+          color: _funFactAccentColor.withValues(alpha: 0.3),
           width: 1,
         ),
       ),

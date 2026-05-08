@@ -83,9 +83,8 @@ class _SignInScreenState extends State<SignInScreen>
 
     _showToast("Welcome back! Let's learn with Eli!", success: true);
     Future.delayed(const Duration(milliseconds: 400), () {
-      if (context.mounted) {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/home');
     });
   }
 
@@ -147,7 +146,7 @@ class _SignInScreenState extends State<SignInScreen>
                         textAlign: TextAlign.center,
                         style: GoogleFonts.nunito(
                           fontSize: 16,
-                          color: textNavy.withOpacity(0.7),
+                          color: textNavy.withValues(alpha: 0.7),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -226,7 +225,7 @@ class _SignInScreenState extends State<SignInScreen>
                                 backgroundColor: accentWarmOrange,
                                 foregroundColor: Colors.white,
                                 elevation: 6,
-                                shadowColor: Colors.black.withOpacity(0.2),
+                                shadowColor: Colors.black.withValues(alpha: 0.2),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(28),
                                 ),
@@ -251,7 +250,7 @@ class _SignInScreenState extends State<SignInScreen>
                             "Don't have an account? ",
                             style: GoogleFonts.nunito(
                               fontSize: 14,
-                              color: textNavy.withOpacity(0.75),
+                              color: textNavy.withValues(alpha: 0.75),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -300,7 +299,7 @@ class _CardContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 20,
             spreadRadius: 2,
             offset: const Offset(0, 10),
