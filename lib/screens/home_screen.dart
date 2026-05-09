@@ -3,7 +3,7 @@ import '../theme/app_colors.dart';
 import '../widgets/level_card.dart';
 import '../widgets/main_layout.dart';
 import '../data/stories_data.dart';
-import '../pages/level_page.dart';
+import './level_screen.dart';
 
 /// Home screen for Eli's English Adventures kids learning app.
 /// Matches React/Next.js design with responsive layout and animations.
@@ -308,7 +308,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             }
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LevelPage()),
+              MaterialPageRoute(
+                builder: (context) => const LevelScreen(levelId: '1'),
+              ),
             );
           },
         ),
@@ -322,7 +324,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           icon: Icons.rocket_launch_rounded,
           themeColor: _levelExplorerColor,
           backgroundImagePath: 'assets/level_2_background.png',
-          onTap: () => _onLevelTapped(context, 'B', 'Explorer'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LevelScreen(levelId: '2'),
+              ),
+            );
+          },
         ),
       ),
       _AnimatedLevelCard(
@@ -334,7 +343,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           icon: Icons.emoji_events_rounded,
           themeColor: _levelChampionColor,
           backgroundImagePath: 'assets/level_3_background.png',
-          onTap: () => _onLevelTapped(context, 'C', 'Champion'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LevelScreen(levelId: '3'),
+              ),
+            );
+          },
         ),
       ),
     ];

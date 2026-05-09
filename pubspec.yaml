@@ -38,6 +38,7 @@ dependencies:
   provider: ^6.1.2
   fluttertoast: ^8.2.8
   lottie: ^3.1.2
+  animate_do: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -63,9 +64,6 @@ flutter:
     - assets/level_1_background.png
     - assets/level_2_background.png
     - assets/level_3_background.png
-
-
-
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
