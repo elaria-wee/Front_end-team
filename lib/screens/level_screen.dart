@@ -43,41 +43,49 @@ class TopBar extends StatelessWidget {
               child: Icon(Icons.arrow_back, color: theme.accentColor, size: 20),
             ),
           ),
-          const Spacer(),
+          const SizedBox(width: 16),
           // Progress Pill
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.8),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('⭐', style: GoogleFonts.fredoka(fontSize: 16)),
-                  const SizedBox(width: 8),
-                  Text(
-                    '$COMPLETED/$TOTAL stories',
-                    style: GoogleFonts.fredoka(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: theme.pillTextColor,
+          Flexible(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.8),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('⭐', style: GoogleFonts.fredoka(fontSize: 16)),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        '$COMPLETED/$TOTAL stories',
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.fredoka(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: theme.pillTextColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-          const Spacer(),
+          const SizedBox(width: 16),
           const SizedBox(width: 44), // Spacer for alignment
         ],
       ),
@@ -316,7 +324,7 @@ class _ListeningSectionState extends State<ListeningSection>
                         const SizedBox(height: 4),
                         Text(
                           'Listening Section',
-                          style: GoogleFonts.fredoka(
+                          style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
                             color: Colors.white,
@@ -763,12 +771,14 @@ class _LevelScreenState extends State<LevelScreen> {
                                   size: 20,
                                 ),
                                 const SizedBox(width: 8),
-                                Text(
-                                  'Stories',
-                                  style: GoogleFonts.fredoka(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900,
-                                    color: const Color(0xFF1E293B),
+                                Flexible(
+                                  child: Text(
+                                    'Stories',
+                                    style: GoogleFonts.fredoka(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900,
+                                      color: const Color(0xFF1E293B),
+                                    ),
                                   ),
                                 ),
                                 const Spacer(),
